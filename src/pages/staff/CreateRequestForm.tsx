@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { useApiBaseUrl } from '../../hooks/useApiBaseUrl';
 import { Input } from '../../components/ui/Input';
 import { Textarea } from '../../components/ui/Textarea';
 import { Button } from '../../components/ui/Button';
@@ -30,6 +31,7 @@ interface CreateRequestFormProps {
 export const CreateRequestForm: React.FC<CreateRequestFormProps> = ({
   onSuccess
 }) => {
+  const baseUrl = useApiBaseUrl();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [proformaFile, setProformaFile] = useState<File | null>(null);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -91,7 +93,7 @@ export const CreateRequestForm: React.FC<CreateRequestFormProps> = ({
       });
 
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:8000/api/requests/', formData, {
+      const response = await axios.post(`${baseUrl}/api/requests/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`,

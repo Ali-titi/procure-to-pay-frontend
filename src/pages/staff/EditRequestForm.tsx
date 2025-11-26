@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useApiBaseUrl } from '../../hooks/useApiBaseUrl';
 import { Input } from '../../components/ui/Input';
 import { Textarea } from '../../components/ui/Textarea';
 import { Button } from '../../components/ui/Button';
@@ -45,6 +46,7 @@ interface RequestData {
 export const EditRequestForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const baseUrl = useApiBaseUrl();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [proformaFile, setProformaFile] = useState<File | null>(null);
@@ -68,7 +70,7 @@ export const EditRequestForm: React.FC = () => {
 
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`http://localhost:8000/api/requests/${id}/`, {
+        const response = await axios.get(`${baseUrl}/api/requests/${id}/`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -89,7 +91,7 @@ export const EditRequestForm: React.FC = () => {
         });
 
         if (requestData.proforma_file) {
-          setExistingFileUrl(`http://localhost:8000${requestData.proforma_file}`);
+          setExistingFileUrl(`${baseUrl}${requestData.proforma_file}`);
         }
 
         setIsLoading(false);
@@ -148,7 +150,7 @@ export const EditRequestForm: React.FC = () => {
       });
 
       const token = localStorage.getItem('token');
-      const response = await axios.put(`http://localhost:8000/api/requests/${id}/`, formData, {
+      const response = await axios.put(`${baseUrl}/api/requests/${id}/`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`,

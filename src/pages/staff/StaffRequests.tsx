@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { PlusIcon, SearchIcon, FilterIcon } from 'lucide-react';
 import axios from 'axios';
+import { useApiBaseUrl } from '../../hooks/useApiBaseUrl';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -26,6 +27,7 @@ interface RequestData {
 }
 export const StaffRequests: React.FC = () => {
   const navigate = useNavigate();
+  const baseUrl = useApiBaseUrl();
   const [isLoading, setIsLoading] = useState(true);
   const [requests, setRequests] = useState<RequestData[]>([]);
   const [filteredRequests, setFilteredRequests] = useState<RequestData[]>([]);
@@ -40,7 +42,7 @@ export const StaffRequests: React.FC = () => {
 
         // Fetch user's requests
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8000/api/requests/', {
+        const response = await axios.get(`${baseUrl}/api/requests/`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

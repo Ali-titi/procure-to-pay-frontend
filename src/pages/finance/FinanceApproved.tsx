@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { useApiBaseUrl } from '../../hooks/useApiBaseUrl';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Card } from '../../components/ui/Card';
 import { Table } from '../../components/ui/Table';
@@ -36,6 +37,7 @@ interface RequestData {
 
 export const FinanceApproved: React.FC = () => {
   const navigate = useNavigate();
+  const baseUrl = useApiBaseUrl();
   const [isLoading, setIsLoading] = useState(true);
   const [approvedRequests, setApprovedRequests] = useState<RequestData[]>([]);
   const [filteredRequests, setFilteredRequests] = useState<RequestData[]>([]);
@@ -52,7 +54,7 @@ export const FinanceApproved: React.FC = () => {
     const fetchApprovedRequests = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get('http://localhost:8000/api/finance/');
+        const response = await axios.get(`${baseUrl}/api/finance/`);
         const apiRequests = response.data;
 
         const transformedRequests: RequestData[] = apiRequests.map((req: any, index: number) => ({
@@ -119,7 +121,7 @@ export const FinanceApproved: React.FC = () => {
     try {
       setValidatingId(selectedRequest.id);
       const token = localStorage.getItem('token');
-      await axios.post(`http://localhost:8000/api/finance/${selectedRequest.id}/validate_receipt/`, {
+      await axios.post(`${baseUrl}/api/finance/${selectedRequest.id}/validate_receipt/`, {
         status: validationStatus,
         comment: validationComment
       }, {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { useApiBaseUrl } from '../../hooks/useApiBaseUrl';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Card } from '../../components/ui/Card';
 import { Table } from '../../components/ui/Table';
@@ -33,6 +34,7 @@ interface DocumentData {
 
 export const FinanceDocuments: React.FC = () => {
   const navigate = useNavigate();
+  const baseUrl = useApiBaseUrl();
   const [isLoading, setIsLoading] = useState(true);
   const [documents, setDocuments] = useState<DocumentData[]>([]);
   const [filteredDocuments, setFilteredDocuments] = useState<DocumentData[]>([]);
@@ -43,7 +45,7 @@ export const FinanceDocuments: React.FC = () => {
     const fetchDocuments = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get('http://localhost:8000/api/finance/');
+        const response = await axios.get(`${baseUrl}/api/finance/`);
         const apiRequests = response.data;
 
         const transformedDocuments: DocumentData[] = apiRequests.map((req: any) => ({

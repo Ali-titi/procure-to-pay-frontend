@@ -1,5 +1,6 @@
 import React, { useEffect, useState, createContext, useContext } from 'react';
 import axios from 'axios';
+import { useApiBaseUrl } from '../hooks/useApiBaseUrl';
 type UserRole = 'staff' | 'approver1' | 'approver2' | 'finance' | 'admin' | null;
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -23,6 +24,7 @@ export const AuthProvider: React.FC<{
 }> = ({
   children
 }) => {
+  const baseUrl = useApiBaseUrl();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [userRole, setUserRole] = useState<UserRole>(null);
   const [user, setUser] = useState<any>(null);
@@ -45,7 +47,7 @@ export const AuthProvider: React.FC<{
   const login = async (email: string, password: string) => {
     try {
       setIsLoading(true);
-      const response = await axios.post('http://localhost:8000/api/auth/login/', {
+      const response = await axios.post(`${baseUrl}/api/auth/login/`, {
         email, // Use email for login
         password,
       });
@@ -75,7 +77,7 @@ export const AuthProvider: React.FC<{
   const register = async (name: string, email: string, password: string, role: string) => {
     try {
       setIsLoading(true);
-      const response = await axios.post('http://localhost:8000/api/auth/register/', {
+      const response = await axios.post(`${baseUrl}/api/auth/register/`, {
         name,
         email,
         password,

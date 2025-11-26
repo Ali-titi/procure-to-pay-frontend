@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ClockIcon, CheckIcon, XIcon, SearchIcon, FilterIcon, ArrowLeftIcon } from 'lucide-react';
 import axios from 'axios';
+import { useApiBaseUrl } from '../../hooks/useApiBaseUrl';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -30,6 +31,7 @@ interface RequestData {
 
 export const ApproverApprovals: React.FC = () => {
   const navigate = useNavigate();
+  const baseUrl = useApiBaseUrl();
   const [isLoading, setIsLoading] = useState(true);
   const [requests, setRequests] = useState<RequestData[]>([]);
   const [filteredRequests, setFilteredRequests] = useState<RequestData[]>([]);
@@ -49,7 +51,7 @@ export const ApproverApprovals: React.FC = () => {
         const token = localStorage.getItem('token');
 
         // Fetch all requests that this approver has worked on
-        const response = await axios.get('http://localhost:8000/api/requests/my_approvals/', {
+        const response = await axios.get(`${baseUrl}/api/requests/my_approvals/`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

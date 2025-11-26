@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ClockIcon, CheckIcon, XIcon, SearchIcon, FilterIcon, AlertCircleIcon, CheckCircleIcon, XCircleIcon } from 'lucide-react';
 import axios from 'axios';
+import { useApiBaseUrl } from '../../hooks/useApiBaseUrl';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -29,6 +30,7 @@ interface RequestData {
 }
 export const ApproverDashboard: React.FC = () => {
   const navigate = useNavigate();
+  const baseUrl = useApiBaseUrl();
   const [isLoading, setIsLoading] = useState(true);
   const [requests, setRequests] = useState<RequestData[]>([]);
   const [filteredRequests, setFilteredRequests] = useState<RequestData[]>([]);
@@ -49,7 +51,7 @@ export const ApproverDashboard: React.FC = () => {
         setIsLoading(true);
 
         // Fetch pending approvals for this approver
-        const response = await axios.get('http://localhost:8000/api/approvals/pending/');
+        const response = await axios.get(`${baseUrl}/api/approvals/pending/`);
         const apiRequests = response.data;
 
         // Transform data to match frontend interface
@@ -118,7 +120,7 @@ export const ApproverDashboard: React.FC = () => {
     try {
       setApprovingId(requestId);
       const token = localStorage.getItem('token');
-      await axios.post(`http://localhost:8000/api/requests/${requestId}/approve/`, {
+      await axios.post(`${baseUrl}/api/requests/${requestId}/approve/`, {
         comment: 'Approved'
       }, {
         headers: {
@@ -139,7 +141,7 @@ export const ApproverDashboard: React.FC = () => {
     try {
       setRejectingId(requestId);
       const token = localStorage.getItem('token');
-      await axios.post(`http://localhost:8000/api/requests/${requestId}/reject/`, {
+      await axios.post(`${baseUrl}/api/requests/${requestId}/reject/`, {
         comment: 'Rejected'
       }, {
         headers: {
