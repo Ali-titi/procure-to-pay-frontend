@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckIcon, FileTextIcon, DollarSignIcon, TrendingUpIcon, SearchIcon, FilterIcon } from 'lucide-react';
 import axios from 'axios';
+import { useApiBaseUrl } from '../../hooks/useApiBaseUrl';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -22,6 +23,7 @@ interface RequestData {
 }
 export const FinanceDashboard: React.FC = () => {
   const navigate = useNavigate();
+  const baseUrl = useApiBaseUrl();
   const [isLoading, setIsLoading] = useState(true);
   const [approvedRequests, setApprovedRequests] = useState<RequestData[]>([]);
   const [filteredRequests, setFilteredRequests] = useState<RequestData[]>([]);
@@ -41,7 +43,7 @@ export const FinanceDashboard: React.FC = () => {
         setIsLoading(true);
 
         // Fetch approved requests for finance
-        const response = await axios.get('http://localhost:8000/api/finance/');
+        const response = await axios.get(`${baseUrl}/api/finance/`);
         const apiRequests = response.data;
 
         // Transform data to match frontend interface

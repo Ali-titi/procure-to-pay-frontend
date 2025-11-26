@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { useApiBaseUrl } from '../../hooks/useApiBaseUrl';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Card } from '../../components/ui/Card';
 import { Table } from '../../components/ui/Table';
@@ -19,6 +20,7 @@ interface PurchaseOrderData {
 }
 
 export const FinancePurchaseOrders: React.FC = () => {
+  const baseUrl = useApiBaseUrl();
   const [isLoading, setIsLoading] = useState(true);
   const [purchaseOrders, setPurchaseOrders] = useState<PurchaseOrderData[]>([]);
   const [filteredOrders, setFilteredOrders] = useState<PurchaseOrderData[]>([]);
@@ -28,7 +30,7 @@ export const FinancePurchaseOrders: React.FC = () => {
     const fetchPurchaseOrders = async () => {
       try {
         setIsLoading(true);
-        const response = await axios.get('http://localhost:8000/api/finance/purchase_orders/');
+        const response = await axios.get(`${baseUrl}/api/finance/purchase_orders/`);
         const apiOrders = response.data;
 
         const transformedOrders: PurchaseOrderData[] = apiOrders.map((order: any) => ({
@@ -69,7 +71,7 @@ export const FinancePurchaseOrders: React.FC = () => {
 
   const handleDownload = (order: PurchaseOrderData) => {
     if (order.purchase_order_file) {
-      window.open(`http://localhost:8000${order.purchase_order_file}`, '_blank');
+      window.open(`${baseUrl}${order.purchase_order_file}`, '_blank');
     }
   };
 

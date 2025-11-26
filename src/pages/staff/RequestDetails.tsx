@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeftIcon, EditIcon, TrashIcon, FileTextIcon, DownloadIcon, RefreshCwIcon } from 'lucide-react';
+import { useApiBaseUrl } from '../../hooks/useApiBaseUrl';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -94,6 +95,7 @@ export const RequestDetails: React.FC = () => {
     id: string;
   }>();
   const navigate = useNavigate();
+  const baseUrl = useApiBaseUrl();
   const [isLoading, setIsLoading] = useState(true);
   const [request, setRequest] = useState<RequestDetail | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -104,7 +106,7 @@ export const RequestDetails: React.FC = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8000/api/requests/${id}/`, {
+      const response = await fetch(`${baseUrl}/api/requests/${id}/`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -148,7 +150,7 @@ export const RequestDetails: React.FC = () => {
 
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:8000/api/requests/${id}/`, {
+      const response = await fetch(`${baseUrl}/api/requests/${id}/`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -420,7 +422,7 @@ export const RequestDetails: React.FC = () => {
                         </p>
                       </div>
                     </div>
-                    <Button variant="outline" size="sm" leftIcon={<DownloadIcon className="h-4 w-4" />} onClick={() => window.open(`http://localhost:8000${request.proforma_file}`, '_blank')}>
+                    <Button variant="outline" size="sm" leftIcon={<DownloadIcon className="h-4 w-4" />} onClick={() => window.open(`${baseUrl}${request.proforma_file}`, '_blank')}>
                       View
                     </Button>
                   </div>}

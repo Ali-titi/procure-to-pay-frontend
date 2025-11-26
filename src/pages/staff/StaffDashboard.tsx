@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { PlusIcon, FileTextIcon, ClockIcon, CheckIcon, XIcon } from 'lucide-react';
 import axios from 'axios';
+import { useApiBaseUrl } from '../../hooks/useApiBaseUrl';
 import { DashboardLayout } from '../../components/layout/DashboardLayout';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
@@ -22,6 +23,7 @@ interface RequestData {
 }
 export const StaffDashboard: React.FC = () => {
   const navigate = useNavigate();
+  const baseUrl = useApiBaseUrl();
   const [isLoading, setIsLoading] = useState(true);
   const [recentRequests, setRecentRequests] = useState<RequestData[]>([]);
   const [stats, setStats] = useState({
@@ -38,7 +40,7 @@ export const StaffDashboard: React.FC = () => {
         setIsLoading(true);
 
         // Fetch user's requests
-        const response = await axios.get('http://localhost:8000/api/requests/');
+        const response = await axios.get(`${baseUrl}/api/requests/`);
         const requests = response.data.results || response.data;
 
         // Transform data to match frontend interface
