@@ -85,7 +85,7 @@ export const Register: React.FC = () => {
                   <option value="approver1">Approver Level 1</option>
                   <option value="approver2">Approver Level 2</option>
                   <option value="finance">Finance</option>
-                  <option value="admin">Admin</option>
+                
                 </select>
                 <ChevronDownIcon className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
               </div>
@@ -107,10 +107,7 @@ export const Register: React.FC = () => {
           </div>
         </Card>
         <div className="mt-4 text-center text-sm text-gray-500">
-          <p>
-            Note: Registration is controlled by your organization. This is a
-            placeholder for UI demonstration.
-          </p>
+
         </div>
       </motion.div>
     </div>;
